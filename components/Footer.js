@@ -5,7 +5,7 @@ import Link from 'next/link'
 export default function Footer() {
     return (
         <footer className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+            <div className="container px-5 py-16 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
                 <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
                     <Link passHref href="/">
                         <div className='flex cursor-pointer'>

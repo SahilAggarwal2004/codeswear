@@ -129,7 +129,7 @@ export async function getServerSideProps(context) {
         url = "https://m.media-amazon.com/images/I/71AtCTSVtbS._SL1500_.jpg"
         title = 'Stickers'
         price = 99
-    } else return { notFound: true, }; // server will return a 404 error and nextjs will show the defualt page for 404 error
+    } else return { notFound: true }; // server will return a 404 error and nextjs will show the defualt page for 404 error
 
     return { props: { url, title, price: '₹' + price } };
 }
