@@ -1,11 +1,25 @@
-import React, { useRef } from 'react'
+import React, { useRef, useContext } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Context from '../context/Context'
 import { AiOutlineShoppingCart, AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai' // react-icons is a very good alternative to font-awesome and is very much optimised than that.
 import { BsFillBagCheckFill } from 'react-icons/bs'
 
 export default function Navbar() {
     const sidebar = useRef();
+    const { cart, setCart, subtotal, setSubtotal } = useContext(Context)
+
+    const interval = setInterval(() => {
+        try {
+            setCart(JSON.parse(localStorage.getItem('cart')) || {})
+            let sum = 0;
+            Object.keys(cart).forEach(id => {
+                sum += cart[id].price * cart[id].quantity
+            })
+            setSubtotal(sum)
+            clearInterval(interval)
+        } catch { }
+    }, 0);
 
     function toggleCart() { sidebar.current.classList.toggle('translate-x-full') }
 
@@ -28,57 +42,22 @@ export default function Navbar() {
                 <AiFillCloseCircle className="absolute top-3 right-3 cursor-pointer scale-150 text-myorange" onClick={toggleCart} />
                 <h2 className='text-xl font-bold mb-5 text-center'>Shopping cart</h2>
                 <ol className='itemlist list-decimal font-semibold h-3/4 overflow-y-scroll'>
-                    <li className='my-3'>
-                        <div className='flex'>
-                            <div className='w-2/3 font-semibold'>Item1</div>
-                            <div className='flex items-center justify-center w-1/3 space-x-3'>
-                                <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
-                                <span>1</span>
-                                <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
+                    {/* We can map an object by making an array of its keys as below */}
+                    {/* Also instead of using array.map(item=>{return element}), we can directly use array.map(item=>element) as below */}
+                    {Object.keys(cart).map(id =>
+                        <li className='my-3' key={id}>
+                            <div className='flex'>
+                                <div className='w-2/3 font-semibold'>{cart[id]?.itemname}</div>
+                                <div className='flex items-center justify-center w-1/3 space-x-3'>
+                                    <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
+                                    <span>{cart[id]?.quantity}</span>
+                                    <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                    <li className='my-3'>
-                        <div className='flex'>
-                            <div className='w-2/3 font-semibold'>Item1</div>
-                            <div className='flex items-center justify-center w-1/3 space-x-3'>
-                                <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
-                                <span>1</span>
-                                <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
-                            </div>
-                        </div>
-                    </li>
-                    <li className='my-3'>
-                        <div className='flex'>
-                            <div className='w-2/3 font-semibold'>Item1</div>
-                            <div className='flex items-center justify-center w-1/3 space-x-3'>
-                                <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
-                                <span>1</span>
-                                <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
-                            </div>
-                        </div>
-                    </li>
-                    <li className='my-3'>
-                        <div className='flex'>
-                            <div className='w-2/3 font-semibold'>Item1</div>
-                            <div className='flex items-center justify-center w-1/3 space-x-3'>
-                                <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
-                                <span>1</span>
-                                <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
-                            </div>
-                        </div>
-                    </li>
-                    <li className='my-3'>
-                        <div className='flex'>
-                            <div className='w-2/3 font-semibold'>Item1</div>
-                            <div className='flex items-center justify-center w-1/3 space-x-3'>
-                                <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' />
-                                <span>1</span>
-                                <AiFillPlusCircle className='cursor-pointer scale-110 text-myorange' />
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    )}
                 </ol>
+                <div>{subtotal}</div>
                 <div className="flex mt-10 space-x-3">
                     <button className="flex items-center mx-auto text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded text-sm">
                         <BsFillBagCheckFill className='mr-1' />Checkout

@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-export default function category(props) {
+export default function Category(props) {
     const { url, title, price } = props
     return (
         <section className="text-gray-600 body-font">
