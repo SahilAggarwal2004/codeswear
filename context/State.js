@@ -5,8 +5,9 @@ const State = (props) => {
     const [cart, setCart] = useState({})
     const [subtotal, setSubtotal] = useState(0)
 
-    function saveCart(cart) {
-        localStorage.setItem('cart', JSON.stringify(cart))
+    function saveCart(cart) { localStorage.setItem('cart', JSON.stringify(cart)) }
+
+    function calculate(cart) {
         let sum = 0;
         Object.keys(cart).forEach(id => {
             sum += cart[id].price * cart[id].quantity
@@ -14,8 +15,14 @@ const State = (props) => {
         setSubtotal(sum)
     }
 
+    function handleState(cart) {
+        setCart(cart)
+        saveCart(cart)
+        calculate(cart)
+    }
+
     return (
-        <Context.Provider value={{ cart, setCart, subtotal, setSubtotal, saveCart }}>
+        <Context.Provider value={{ cart, setCart, subtotal, calculate, handleState }}>
             {props.children}
         </Context.Provider>
     )

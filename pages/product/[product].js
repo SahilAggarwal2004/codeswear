@@ -6,17 +6,14 @@ export default function Product(props) {
     const { product } = props;
     const pincode = useRef();
     const [service, setService] = useState();
-    const { cart, setCart, saveCart } = useContext(Context)
+    const { cart, handleState } = useContext(Context)
 
     function add() {
-        const id = 1 || Math.floor(Math.random() * 1000)
         const quantity = 1
         let newCart = JSON.parse(localStorage.getItem('cart')) || cart
-        if (id in newCart) newCart[id].quantity += quantity
-        else newCart[id] = { id, quantity, price: 499, itemname: 'T-Shirt', size: 'M', color: 'orange' }
-        setCart(newCart)
-        saveCart(newCart)
-        // addToCart({ id: 1, quantity: 1, price: 499, itemname: 'T-Shirt', size: 'M', color: 'orange' })
+        if (product in newCart) newCart[product].quantity += quantity
+        else newCart[product] = { id: product, quantity, price: 499, itemname: 'T-Shirt', size: 'M', color: 'orange' }
+        handleState(newCart)
     }
 
     async function checkAvailability() {
