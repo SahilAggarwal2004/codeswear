@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Context from "./Context";
 
 const State = (props) => {
-    const { cart, setCart, subtotal, calculate } = props
+    const { cart, setCart, subtotal, calculate, sidebar } = props
 
     function handleState(cart) {
         setCart(cart)
@@ -24,8 +24,14 @@ const State = (props) => {
 
     function clearCart() { handleState({}) }
 
+    function verifyPin(event) {
+        const key = event.key
+        const reg = /[0-9]/g
+        if (key !== 'Backspace' && !reg.test(key)) event.preventDefault()
+    }
+
     return (
-        <Context.Provider value={{ cart, subtotal, editCart, clearCart }}>
+        <Context.Provider value={{ cart, subtotal, editCart, clearCart, verifyPin, sidebar }}>
             {props.children}
         </Context.Provider>
     )

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import '../styles/globals.css'
@@ -9,12 +9,14 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const [cart, setCart] = useState({})
   const [subtotal, setSubtotal] = useState(0)
+  const sidebar = useRef();
 
   function calculate(cart) {
     let sum = 0;
     Object.keys(cart).forEach(id => {
       sum += cart[id].price * cart[id].quantity
     })
+    if (sum === 0) sidebar.current.classList.add('translate-x-full')
     setSubtotal(sum)
   }
 
@@ -24,13 +26,13 @@ function MyApp({ Component, pageProps }) {
     calculate(localCart)
   }, [])
 
-  return <div className='overflow-x-hidden'>
-    <State cart={cart} setCart={setCart} subtotal={subtotal} calculate={calculate}>
+  return <>
+    <State cart={cart} setCart={setCart} subtotal={subtotal} calculate={calculate} sidebar={sidebar}>
       {router.pathname !== "/_error" && <Navbar />}
       <Component {...pageProps} />
       {router.pathname !== "/_error" && <Footer />}
     </State>
-  </div>
+  </>
 }
 
 export default MyApp

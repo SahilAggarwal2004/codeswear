@@ -6,19 +6,13 @@ export default function Product(props) {
     const { product } = props;
     const pincode = useRef();
     const [service, setService] = useState();
-    const { editCart } = useContext(Context)
+    const { editCart, verifyPin } = useContext(Context)
 
     async function checkAvailability() {
         if (!pincode.current?.value) return
         const response = await fetch('/api/pincode')
         const pincodes = await response.json()
         setService(pincodes.includes(+pincode.current.value)) // adding a '+' in front of string converts it to a number if string is a number. It is known as unary plus and is different from concatenation. Number() could also be used here
-    }
-
-    function verifyPin(event) {
-        const key = event.key
-        const reg = /[0-9]/g
-        if (key !== 'Backspace' && !reg.test(key)) event.preventDefault()
     }
 
     return (
@@ -102,7 +96,7 @@ export default function Product(props) {
                         </div>
                         <div>
                             <div className='mt-6 mb-1 flex space-x-2 text-sm'>
-                                <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded' placeholder='Enter pincode' onFocus={event => event.target.oldValue = event.target.value} onKeyDown={verifyPin} />
+                                <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded' placeholder='Enter pincode' onKeyDown={verifyPin} />
                                 <button className='text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded' onClick={checkAvailability}>Check Availability</button>
                             </div>
                             {service && <div className='text-green-600 text-xs ml-0.5'>Yay! This pincode is serviceable!</div>}
