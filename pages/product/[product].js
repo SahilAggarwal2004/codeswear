@@ -15,6 +15,12 @@ export default function Product(props) {
         setService(pincodes.includes(+pincode.current.value)) // adding a '+' in front of string converts it to a number if string is a number. It is known as unary plus and is different from concatenation. Number() could also be used here
     }
 
+    function verifyPin(event) {
+        const key = event.key
+        const reg = /[0-9]/g
+        if (key !== 'Backspace' && !reg.test(key)) event.preventDefault()
+    }
+
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-16 mx-auto">
@@ -96,7 +102,7 @@ export default function Product(props) {
                         </div>
                         <div>
                             <div className='mt-6 mb-1 flex space-x-2 text-sm'>
-                                <input ref={pincode} type='number' className='px-2 border-2 rounded' placeholder='Enter pincode' />
+                                <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded' placeholder='Enter pincode' onFocus={event => event.target.oldValue = event.target.value} onKeyDown={verifyPin} />
                                 <button className='text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded' onClick={checkAvailability}>Check Availability</button>
                             </div>
                             {service && <div className='text-green-600 text-xs ml-0.5'>Yay! This pincode is serviceable!</div>}
