@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }) {
 
   function calculate(cart) {
     let sum = 0;
-    console.log(cart)
     Object.keys(cart).forEach(id => {
       sum += cart[id].price * cart[id].quantity
     })

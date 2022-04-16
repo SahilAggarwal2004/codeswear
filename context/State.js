@@ -6,8 +6,7 @@ const State = (props) => {
 
     function handleState(cart) {
         const sum = calculate(cart)
-        console.log(sum)
-        if (!sum && sum !== 0) { console.log('kuch bhi krle nahi krunga'); return }
+        if (!sum && sum !== 0) return
         setCart(cart)
         setSubtotal(sum)
         localStorage.setItem('cart', JSON.stringify(cart))

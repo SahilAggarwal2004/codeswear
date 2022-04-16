@@ -25,7 +25,7 @@ export default function Navbar() {
                 </ul>
                 <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
                     <Link passHref href='/login'>
-                        <div><MdAccountCircle className='scale-150 cursor-pointer' /></div>
+                        <a><MdAccountCircle className='scale-150' /></a>
                     </Link>
                     <AiOutlineShoppingCart className='scale-150 cursor-pointer' onClick={toggleCart} />
                 </div>
