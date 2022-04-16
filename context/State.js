@@ -2,19 +2,23 @@ import React from "react";
 import Context from "./Context";
 
 const State = (props) => {
-    const { cart, setCart, subtotal, calculate, sidebar } = props
+    const { cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
 
     function handleState(cart) {
+        const sum = calculate(cart)
+        console.log(sum)
+        if (!sum && sum !== 0) { console.log('kuch bhi krle nahi krunga'); return }
         setCart(cart)
-        calculate(cart)
+        setSubtotal(sum)
         localStorage.setItem('cart', JSON.stringify(cart))
     }
 
-    function editCart(type, id, price, itemname, size, color, quantity = 1) {
+    function editCart(type, id, price, itemname, size, quantity = 1) {
         let newCart = cart
+        if (typeof quantity !== 'number') { quantity = 0 }
         if (type === 'add') {
             if (id in newCart) newCart[id].quantity += quantity
-            else newCart[id] = { id, quantity, price, itemname, size, color }
+            else newCart[id] = { id, quantity, price, itemname, size }
         } else if (type === 'remove') {
             newCart[id].quantity -= quantity
             if (newCart[id].quantity <= 0) delete newCart[id]

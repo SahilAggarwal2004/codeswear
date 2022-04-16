@@ -1,9 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Context from '../context/Context'
 import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
 
 export default function Checkout() {
-  const { cart, subtotal, editCart, verifyPin } = useContext(Context)
+  const { cart, subtotal, editCart, verifyPin, sidebar } = useContext(Context)
+
+  useEffect(() => {
+    sidebar.current?.classList.add('translate-x-full')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
 
   return (
     <div className='container m-auto px-5'>
@@ -50,7 +56,7 @@ export default function Checkout() {
           {Object.keys(cart).map(id =>
             <li className='my-3' key={id}>
               <div className='flex'>
-                <div className='w-2/3 font-semibold'>{cart[id]?.itemname} ({cart[id]?.size}, {cart[id]?.color})</div>
+                <div className='w-2/3 font-semibold'>{cart[id]?.itemname} ({cart[id]?.size})</div>
                 <div className='flex items-center justify-center w-1/3 space-x-3'>
                   <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' onClick={() => { editCart('remove', id) }} />
                   <span>{cart[id]?.quantity}</span>

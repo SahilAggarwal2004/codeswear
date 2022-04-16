@@ -13,21 +13,23 @@ function MyApp({ Component, pageProps }) {
 
   function calculate(cart) {
     let sum = 0;
+    console.log(cart)
     Object.keys(cart).forEach(id => {
       sum += cart[id].price * cart[id].quantity
     })
-    if (sum === 0) sidebar.current.classList.add('translate-x-full')
-    setSubtotal(sum)
+    if (sum === 0) sidebar.current?.classList.add('translate-x-full')
+    return sum
   }
 
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem('cart')) || {}
     setCart(localCart)
-    calculate(localCart)
+    const sum = calculate(localCart)
+    sum ? setSubtotal(sum) : setSubtotal(0)
   }, [])
 
   return <>
-    <State cart={cart} setCart={setCart} subtotal={subtotal} calculate={calculate} sidebar={sidebar}>
+    <State cart={cart} setCart={setCart} subtotal={subtotal} setSubtotal={setSubtotal} calculate={calculate} sidebar={sidebar}>
       {router.pathname !== "/_error" && <Navbar />}
       <Component {...pageProps} />
       {router.pathname !== "/_error" && <Footer />}

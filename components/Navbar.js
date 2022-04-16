@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Context from '../context/Context'
 import { AiOutlineShoppingCart, AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai' // react-icons is a very good alternative to font-awesome and is very much optimised than that.
 import { BsFillBagCheckFill } from 'react-icons/bs'
+import { MdAccountCircle } from 'react-icons/md'
 
 export default function Navbar() {
     const { cart, subtotal, editCart, clearCart, sidebar } = useContext(Context)
@@ -22,21 +23,24 @@ export default function Navbar() {
                     <Link passHref href='/categories/mugs'><a>Mugs</a></Link>
                     <Link passHref href='/categories/stickers'><a>Stickers</a></Link>
                 </ul>
-                <div className='mx-5 h-full absolute top-4 right-0 flex md:items-center md:top-0'>
+                <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
+                    <Link passHref href='/login'>
+                        <div><MdAccountCircle className='scale-150 cursor-pointer' /></div>
+                    </Link>
                     <AiOutlineShoppingCart className='scale-150 cursor-pointer' onClick={toggleCart} />
                 </div>
 
-                <div ref={sidebar} className='absolute top-0 right-0 z-10 transition-transform translate-x-full w-72 h-screen bg-lightorange border-l border-black px-4 py-6 select-none'>
+                <div ref={sidebar} className='absolute top-0 right-0 z-10 transition-transform translate-x-full w-[17.5rem] h-screen bg-lightorange border-l border-black px-4 py-6 select-none'>
                     <AiFillCloseCircle className="absolute top-3 right-3 cursor-pointer scale-150 text-myorange" onClick={toggleCart} />
                     <h2 className='text-xl font-bold mb-5 text-center'>Shopping cart</h2>
+                    {!subtotal && <div className='text-center absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] font-semibold'>Cart Empty!</div>}
                     <ol className='itemlist list-decimal pl-6 font-semibold max-h-[calc(100vh-11.4rem)] overflow-y-scroll relative'>
                         {/* We can map an object by making an array of its keys as below */}
                         {/* Also instead of using array.map(item=>{return element}), we can directly use array.map(item=>element) as below */}
-                        {!subtotal && <div className='text-center absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]'>Cart Empty!</div>}
                         {Object.keys(cart).map(id =>
                             <li className='my-3' key={id}>
                                 <div className='flex'>
-                                    <div className='w-2/3 font-semibold'>{cart[id]?.itemname} ({cart[id]?.size}, {cart[id]?.color})</div>
+                                    <div className='w-2/3 font-semibold'>{cart[id]?.itemname} ({cart[id]?.size})</div>
                                     <div className='flex items-center justify-center w-1/3 space-x-3'>
                                         <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' onClick={() => { editCart('remove', id) }} />
                                         <span>{cart[id]?.quantity}</span>
@@ -49,11 +53,11 @@ export default function Navbar() {
                     <div className='absolute bottom-20 left-0 font-semibold w-full text-center'>Subtotal: ₹{subtotal}</div>
                     <div className="flex space-x-3 w-3/4 absolute bottom-6 left-[50%] -translate-x-[50%]">
                         <Link passHref href='/checkout'>
-                            <button disabled={!subtotal} className="flex items-center mx-auto text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded text-sm">
+                            <button disabled={!subtotal} className="flex items-center mx-auto text-white bg-myorange border-0 py-2 px-3 focus:outline-none hover:bg-darkorange rounded text-sm">
                                 <BsFillBagCheckFill className='mr-1' />Checkout
                             </button>
                         </Link>
-                        <button disabled={!subtotal} className="flex items-center mx-auto text-myorange bg-transparent border border-myorange py-2 px-4 focus:outline-none hover:bg-myorange hover:text-white rounded text-sm" onClick={clearCart}>Clear Cart</button>
+                        <button disabled={!subtotal} className="flex items-center mx-auto text-myorange bg-transparent border border-myorange py-2 px-3 focus:outline-none hover:bg-myorange hover:text-white rounded text-sm" onClick={clearCart}>Clear Cart</button>
                     </div>
                 </div>
             </nav >
