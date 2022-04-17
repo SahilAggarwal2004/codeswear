@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Link from 'next/link'
+import mongoose from 'mongoose'
+import Product from '../../models/Product'
 
 export default function Category(props) {
     return (
         <section className="text-gray-600 body-font">
-            <div className="container px-5 py-24 mx-auto">
+            <div className="container px-10 py-24 mx-auto">
                 <div className="flex flex-wrap -m-4 text-center">
                     {props.products?.map(({ id, name, image, price, title }) =>
                         <Link passHref href={`/product/${id}`} key={id}>
@@ -36,8 +38,9 @@ export async function getServerSideProps(context) {
     //     url = "https://m.media-amazon.com/images/I/51KVTTZm6tL._SL1000_.jpg"
     //     url = "https://m.media-amazon.com/images/I/71AtCTSVtbS._SL1500_.jpg"
 
-    const response = await fetch(`${process.env.API}products/get?category=${category}`)
-    const products = await response.json()
+    // Using direct logic at server instead of fetching for faster response. Now, there is no vulnerability since we are using the logic at server side.
+    if (!mongoose.connections[0].readyState) mongoose.connect(process.env.URI, { useUnifiedTopology: true, useNewUrlParser: true });
+    const products = await Product.find({ category }).select("id name image price title -_id").lean(); // mongoose by default hydrate the results of the query but lean() tells mongoose not to hydrate the results as keep them as plain js objects. And thus after using lean(), the result would not accept any mongoose function.
 
-    return { props: { products } };
+    return { props: { products: products } };
 }
