@@ -3,7 +3,6 @@ import React from 'react'
 import Link from 'next/link'
 
 export default function Category(props) {
-    // const { url, title, price } = props.products
     return (
         <section className="text-gray-600 body-font">
             <div className="container px-5 py-24 mx-auto">
@@ -37,7 +36,7 @@ export async function getServerSideProps(context) {
     //     url = "https://m.media-amazon.com/images/I/51KVTTZm6tL._SL1000_.jpg"
     //     url = "https://m.media-amazon.com/images/I/71AtCTSVtbS._SL1500_.jpg"
 
-    const response = await fetch(`http://localhost:3000/api/products/get?category=${category}`)
+    const response = await fetch(`${process.env.API}products/get?category=${category}`)
     const products = await response.json()
 
     return { props: { products } };
