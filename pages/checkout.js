@@ -56,7 +56,7 @@ export default function Checkout() {
           {Object.keys(cart).map(id =>
             <li className='my-3' key={id}>
               <div className='flex'>
-                <div className='w-2/3 font-semibold'>{cart[id]?.itemname} ({cart[id]?.size})</div>
+                <div className='w-2/3 font-semibold'>{cart[id]?.name} ({cart[id]?.size})</div>
                 <div className='flex items-center justify-center w-1/3 space-x-3'>
                   <AiFillMinusCircle className='cursor-pointer scale-110 text-myorange' onClick={() => { editCart('remove', id) }} />
                   <span>{cart[id]?.quantity}</span>

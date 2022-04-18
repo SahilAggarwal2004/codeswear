@@ -12,12 +12,13 @@ const State = (props) => {
         localStorage.setItem('cart', JSON.stringify(cart))
     }
 
-    function editCart(type, id, price, itemname, size, quantity = 1) {
+    function editCart(type, id, price, name, size, quantity = 1) {
         let newCart = cart
+        if (size) id = id + size
         if (typeof quantity !== 'number') { quantity = 0 }
         if (type === 'add') {
             if (id in newCart) newCart[id].quantity += quantity
-            else newCart[id] = { id, quantity, price, itemname, size }
+            else newCart[id] = { id, quantity, price, name, size }
         } else if (type === 'remove') {
             newCart[id].quantity -= quantity
             if (newCart[id].quantity <= 0) delete newCart[id]
