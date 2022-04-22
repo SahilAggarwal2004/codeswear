@@ -28,8 +28,9 @@ export default function Category(props) {
 }
 
 export async function getServerSideProps(context) {
+    const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const { category } = context.query
-    if (category !== 'tshirts' && category !== 'hoodies' && category !== 'mugs' && category !== 'stickers') return { notFound: true }; // server will return a 404 error and nextjs will show the defualt page for 404 error
+    if (!categories.includes(category)) return { notFound: true }; // server will return a 404 error and nextjs will show the defualt page for 404 error
 
     //     url = "https://m.media-amazon.com/images/I/51lSbxUm5YL._UL1500_.jpg"
     //     url = "https://m.media-amazon.com/images/I/51ZIqCyzpbL._UL1000_.jpg"

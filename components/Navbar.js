@@ -7,7 +7,7 @@ import { BsFillBagCheckFill } from 'react-icons/bs'
 import { MdAccountCircle } from 'react-icons/md'
 
 export default function Navbar() {
-    const { cart, subtotal, editCart, clearCart, sidebar } = useContext(Context)
+    const { cart, subtotal, editCart, clearCart, sidebar, categories } = useContext(Context)
 
     function toggleCart() { sidebar.current.classList.toggle('translate-x-full') }
 
@@ -18,10 +18,7 @@ export default function Navbar() {
                     <Link passHref href='/'><a><Image src="/logo.png" alt="CodesWear" width={49} height={35} quality={100} /></a></Link>
                 </div>
                 <ul className='flex space-x-4 font-semibold mt-2 mb-1 md:my-0'>
-                    <Link passHref href='/categories/tshirts'><a>Tshirts</a></Link>
-                    <Link passHref href='/categories/hoodies'><a>Hoodies</a></Link>
-                    <Link passHref href='/categories/mugs'><a>Mugs</a></Link>
-                    <Link passHref href='/categories/stickers'><a>Stickers</a></Link>
+                    {categories.map(category => <Link key={category} passHref href={`/categories/${category}`}><a className='hover:text-myorange'>{category.charAt(0).toUpperCase() + category.slice(1)}</a></Link>)}
                 </ul>
                 <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
                     <Link passHref href='/login'>

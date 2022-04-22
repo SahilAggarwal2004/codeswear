@@ -3,6 +3,7 @@ import Context from "./Context";
 
 const State = (props) => {
     const { cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
+    const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
 
     function handleState(cart) {
         const sum = calculate(cart)
@@ -35,7 +36,7 @@ const State = (props) => {
     }
 
     return (
-        <Context.Provider value={{ cart, subtotal, editCart, clearCart, verifyPin, sidebar }}>
+        <Context.Provider value={{ cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories }}>
             {props.children}
         </Context.Provider>
     )
