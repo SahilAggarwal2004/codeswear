@@ -1,15 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useRef, useState, useContext } from 'react'
 import Context from '../../context/Context';
-import mongoose from 'mongoose'
-import Product from '../../models/Product'
 
 export default function Id(props) {
-    const { product: { id, name, description, image, price, sizes } } = props;
+    const { product: { id, name, description, image, price, sizes, reviews } } = props;
     const pincode = useRef();
     const size = useRef();
     const [service, setService] = useState();
-    const { editCart, verifyPin } = useContext(Context)
+    const { editCart, verifyPin } = useContext(Context);
+    let ratings = 0;
+
+    if (reviews.length) {
+        let sum = 0;
+        reviews.forEach(review => sum += review.review);
+        ratings = Math.ceil(sum / reviews.length)
+    }
 
     async function checkAvailability() {
         if (!pincode.current?.value) return
@@ -28,22 +33,13 @@ export default function Id(props) {
                         <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{name}</h1>
                         <div className="flex mb-4">
                             <span className="flex items-center">
-                                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
+                                {[...Array(ratings)].map((rating, index) => <svg key={index} fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
+                                </svg>)}
+                                {[...Array(5 - ratings)].map((rating, index) => <svg key={index} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                                <span className="text-gray-600 ml-3 text-center">4 Reviews</span>
+                                </svg>)}
+                                <span className="text-gray-600 ml-3 text-center">{reviews.length === 1 ? '1 Review' : `${reviews.length || 'No'} Reviews`}</span>
                             </span>
                             <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2">
                                 <a className="text-gray-500">
@@ -103,8 +99,8 @@ export default function Id(props) {
 
 export async function getServerSideProps(context) {
     const { id } = context.query
-    if (!mongoose.connections[0].readyState) mongoose.connect(process.env.URI, { useUnifiedTopology: true, useNewUrlParser: true });
-    const product = await Product.find({ id }).select("-__v -_id -title -category")
-    if (!product) return { notFound: true };
-    return { props: { product: JSON.parse(JSON.stringify(product[0])) } };
+    const response = await fetch(`${process.env.API}products/get?id=${id}`)
+    const product = await response.json()
+    if (!product.length) return { notFound: true };
+    return { props: { product: product[0] } };
 }
