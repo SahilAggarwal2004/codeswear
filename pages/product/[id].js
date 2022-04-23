@@ -1,26 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useContext } from 'react'
 import Context from '../../context/Context';
+import { toast } from 'react-toastify';
 
 export default function Id(props) {
     const { product: { id, name, description, image, price, sizes, reviews } } = props;
     const pincode = useRef();
     const size = useRef();
-    const [service, setService] = useState();
-    const { editCart, verifyPin } = useContext(Context);
+    const { editCart, verifyPin, buyNow, pincodes } = useContext(Context);
     let ratings = 0;
 
     if (reviews.length) {
         let sum = 0;
         reviews.forEach(review => sum += review.review);
-        ratings = Math.ceil(sum / reviews.length)
+        ratings = Math.ceil(sum / reviews.length);
     }
 
     async function checkAvailability() {
-        if (!pincode.current?.value) return
-        const response = await fetch('/api/pincode')
-        const pincodes = await response.json()
-        setService(pincodes.includes(+pincode.current.value)) // adding a '+' in front of string converts it to a number if string is a number. It is known as unary plus and is different from concatenation. Number() could also be used here
+        if (!pincode.current?.value) return toast.warning('Please enter a pincode first!')
+        // adding a '+' in front of string converts it to a number if string is a number. It is known as unary plus and is different from concatenation. Number() could also be used here
+        pincodes.includes(+pincode.current.value) ? toast.success('Yay! This pincode is serviceable!') : toast.warning('Sorry! We do not deliver to this pincode yet!')
     }
 
     return (
@@ -76,7 +75,7 @@ export default function Id(props) {
                         <div className="flex flex-col xs:flex-row items-start xs:items-center">
                             <span className="title-font font-medium text-2xl text-gray-900">₹{price}</span>
                             <div className='xs:ml-auto space-x-4 flex items-center mt-2 xs:mt-0'>
-                                <button className="text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded" onClick={() => { editCart('add', id, price, name, size.current.value) }}>Buy Now</button>
+                                <button className="text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded" onClick={() => { buyNow(id, price, name, size.current.value) }}>Buy Now</button>
                                 <button className="text-white bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded" onClick={() => { editCart('add', id, price, name, size.current.value) }}>Add to cart</button>
                                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500">
                                     <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
@@ -85,13 +84,9 @@ export default function Id(props) {
                                 </button>
                             </div>
                         </div>
-                        <div>
-                            <div className='mt-6 mb-1 max-w-full flex space-x-2 text-sm'>
-                                <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded max-w-[50%]' placeholder='Enter pincode' onKeyDown={verifyPin} />
-                                <button className='text-white max-w-[50%] bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded' onClick={checkAvailability}>Check Availability</button>
-                            </div>
-                            {service && <div className='text-green-600 text-xs ml-0.5'>Yay! This pincode is serviceable!</div>}
-                            {!service && pincode.current?.value && <div className='text-red-600 text-xs'>Sorry! We do not deliver to this pincode yet!</div>}
+                        <div className='mt-6 mb-1 max-w-full flex space-x-2 text-sm'>
+                            <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded max-w-[50%]' placeholder='Enter pincode' onKeyDown={verifyPin} />
+                            <button className='text-white max-w-[50%] bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded' onClick={checkAvailability}>Check Availability</button>
                         </div>
                     </div>
                 </div>
