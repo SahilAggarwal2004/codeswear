@@ -9,12 +9,12 @@ export default function Footer() {
         <footer className="text-gray-600 body-font">
             <div className="container px-5 py-16 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
                 <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-                    <Link passHref href="/">
-                        <div className='flex cursor-pointer'>
-                            <Image src="/logo.png" alt="CodesWear" width={35} height={25} quality={100} />
-                            <span className="ml-3 text-xl" style={{ color: 'rgb(250,83,64)' }}>CodesWear</span>
+                    <div className='flex items-center'>
+                        <div className='h-[1.5625rem] aspect-[1.4]'>
+                            <Image src="/logo.png" alt="CodesWear" width={67.2} height={48} priority />
                         </div>
-                    </Link>
+                        <span className="ml-3 text-xl text-myorange">CodesWear</span>
+                    </div>
                     <div className="mt-2 text-sm text-gray-500">
                         <p>Wear the &lt;code/&gt;</p>
                         <p>Premium tshirts, hoodies and apparals</p>

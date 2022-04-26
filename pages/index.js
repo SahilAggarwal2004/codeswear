@@ -11,7 +11,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <Image src="/home.png" alt="Wear the Code!" width={820} height={312} quality={100} layout='responsive' priority />
+        <Image src="/home.png" alt="Wear the Code!" width={820} height={312} quality={100} layout='responsive' />
         <section className="text-gray-600 body-font">
           <div className="container px-5 py-24 mx-auto">
             <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">

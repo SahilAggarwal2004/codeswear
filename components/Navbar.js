@@ -13,8 +13,8 @@ export default function Navbar() {
 
     return <>
         <nav className="sticky z-10 inset-0 flex flex-col justify-center items-center md:flex-row md:justify-start py-2 w-full shadow-lg mb-4 bg-white">
-            <div className="mx-5 flex">
-                <Link passHref href='/'><a><Image src="/logo.png" alt="CodesWear" width={49} height={35} quality={100} /></a></Link>
+            <div className="mx-5 flex h-[2.1875rem] aspect-[1.4]">
+                <Link passHref href='/'><a><Image src="/logo.png" alt="CodesWear" width={67.2} height={48} priority /></a></Link>
             </div>
             <ul className='flex space-x-4 font-semibold mt-2 mb-1 md:my-0'>
                 {categories.map(category => <Link key={category} passHref href={`/categories/${category}`}><a className='hover:text-myorange'>{category.charAt(0).toUpperCase() + category.slice(1)}</a></Link>)}
