@@ -1,10 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useRef, useContext } from 'react'
 import Context from '../../context/Context';
+import Image from 'next/image'
 import { toast } from 'react-toastify';
 
-export default function Id(props) {
-    const { product: { id, name, description, image, price, sizes, reviews } } = props;
+export default function Id({ product: { id, name, description, image, price, sizes, reviews } }) {
     const pincode = useRef();
     const size = useRef();
     const { editCart, verifyPin, buyNow, pincodes } = useContext(Context);
@@ -26,7 +25,9 @@ export default function Id(props) {
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 py-16 mx-auto">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap items-center justify-center">
-                    <img alt="ecommerce" className="w-1/2 sm:w-1/3 xl:w-1/4 object-cover object-top rounded" src={image} />
+                    <div className='relative w-1/2 sm:w-1/3 xl:w-1/4 aspect-[0.6] rounded object-cover object-top'>
+                        <Image alt={name} src={image} layout='fill' objectFit='contain' />
+                    </div>
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">CODESWEAR</h2>
                         <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{name}</h1>
@@ -84,7 +85,7 @@ export default function Id(props) {
                                 </button>
                             </div>
                         </div>
-                        <div className='mt-6 mb-1 max-w-full flex space-x-2 text-sm'>
+                        <div className='mt-6 max-w-full flex space-x-2 text-sm'>
                             <input ref={pincode} type='tel' minLength={6} maxLength={6} className='px-2 border-2 rounded max-w-[50%]' placeholder='Enter pincode' onKeyDown={verifyPin} />
                             <button className='text-white max-w-[50%] bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded' onClick={checkAvailability}>Check Availability</button>
                         </div>

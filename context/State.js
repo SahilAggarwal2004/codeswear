@@ -3,7 +3,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import Context from "./Context";
 
-const State = (props) => {
+const State = props => {
     const router = useRouter();
     const { cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
