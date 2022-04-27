@@ -1,13 +1,25 @@
-import { useRouter } from "next/router";
 import React from "react";
 import { toast } from "react-toastify";
 import Context from "./Context";
 
 const State = props => {
-    const router = useRouter();
-    const { cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
+    const { router, cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
+    const host = process.env.API || "http://localhost:5000/"
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const pincodes = [110045]
+
+    async function fetchApp(api, method = "GET", body = null, token = null) {
+        try {
+            const authtoken = token || localStorage.getItem('token')
+            const response = await fetch(host + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
+            const json = await response.json();
+            json.success ? toast.success(json.msg) : toast.error(json.error)
+            return json.success
+        } catch {
+            toast.error("Server Down! Please try again later...");
+            return false
+        }
+    }
 
     function handleCart(cart) {
         const sum = calculate(cart)
@@ -53,7 +65,7 @@ const State = props => {
     }
 
     return (
-        <Context.Provider value={{ cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes }}>
+        <Context.Provider value={{ router, fetchApp, cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes }}>
             {props.children}
         </Context.Provider>
     )

@@ -28,9 +28,8 @@ export default function Category({ products, category }) {
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ query: { category } }) {
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
-    const { category } = context.query
     if (!categories.includes(category)) return { notFound: true }; // server will return a 404 error and nextjs will show the defualt page for 404 error
 
     const response = await fetch(`${process.env.API}products/get?category=${category}`)

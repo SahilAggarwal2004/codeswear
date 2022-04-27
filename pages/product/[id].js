@@ -96,8 +96,7 @@ export default function Id({ product: { id, name, description, image, price, siz
     )
 }
 
-export async function getServerSideProps(context) {
-    const { id } = context.query
+export async function getServerSideProps({ query: { id } }) {
     const response = await fetch(`${process.env.API}products/get?id=${id}`)
     const product = await response.json()
     if (!product.length) return { notFound: true };

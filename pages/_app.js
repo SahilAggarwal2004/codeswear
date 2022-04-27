@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
     sum ? setSubtotal(sum) : setSubtotal(0)
   }, [])
 
-  return <State cart={cart} setCart={setCart} subtotal={subtotal} setSubtotal={setSubtotal} calculate={calculate} sidebar={sidebar}>
+  return <State router={router} cart={cart} setCart={setCart} subtotal={subtotal} setSubtotal={setSubtotal} calculate={calculate} sidebar={sidebar}>
     {/* React-toastify is an easy to use library for showing alerts. Read docs for more info. */}
     <ToastContainer pauseOnHover={false} autoClose={2000} position="bottom-left" />
     {router.pathname !== "/_error" && <Navbar />}
