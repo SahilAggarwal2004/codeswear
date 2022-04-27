@@ -4,7 +4,7 @@ import Context from "./Context";
 
 const State = props => {
     const { router, cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
-    const host = process.env.API || "http://localhost:5000/"
+    const host = process.env.NEXT_PUBLIC_API || "http://localhost:5000/"
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const pincodes = [110045]
 
