@@ -12,7 +12,7 @@ export default function Category({ products, category }) {
                         <Link passHref href={`/product/${id}`} key={id}>
                             <div className="lg:w-1/4 md:w-1/2 py-4 w-full cursor-pointer shadow-inner">
                                 <a className="block relative rounded overflow-hidden h-48">
-                                    <Image alt={title} src={image} layout='fill' objectFit='contain' />
+                                    <Image alt={title} src={image} layout='fill' objectFit='contain' loading='lazy' />
                                 </a>
                                 <div className="mt-4">
                                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{title}</h3>

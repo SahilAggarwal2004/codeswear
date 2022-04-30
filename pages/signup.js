@@ -11,8 +11,8 @@ export default function Signup() {
 
   async function submit(event) {
     event.preventDefault()
-    const success = await fetchApp(`auth/signup`, 'POST', JSON.stringify({ name: name.current.value, email: email.current.value, password: password.current.value }))
-    if (success) router.push('/login')
+    const data = await fetchApp(`auth/signup`, 'POST', JSON.stringify({ name: name.current.value, email: email.current.value, password: password.current.value }))
+    if (data.success) router.push('/login')
   }
 
   return (

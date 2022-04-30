@@ -14,11 +14,10 @@ const State = props => {
             const authtoken = token || localStorage.getItem('token')
             const response = await fetch(host + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
             const json = await response.json();
-            json.success ? toast.success(json.msg) : toast.error(json.error)
-            return json.success
+            return { success: json.success, json }
         } catch {
             toast.error("Server Down! Please try again later...");
-            return false
+            return { success: false }
         }
     }
 
