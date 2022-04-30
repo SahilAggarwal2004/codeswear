@@ -64,7 +64,7 @@ export default function Id({ product: { id, name, description, image, price, siz
                             <span className="mr-3">Size</span>
                             <div className="relative">
                                 <select ref={size} className="rounded border appearance-none py-2 focus:outline-none focus:border-myorange text-base pl-3 pr-10">
-                                    {sizes.map(element => <option key={element._id}>{element.size.toUpperCase()}</option>)}
+                                    {sizes.map(element => <option key={element._id}>{element.size}</option>)}
                                 </select>
                                 <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
