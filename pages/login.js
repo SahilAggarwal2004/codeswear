@@ -12,7 +12,7 @@ export default function Login() {
     event.preventDefault()
     const data = await fetchApp(`auth/login`, 'POST', JSON.stringify({ email: email.current.value, password: password.current.value }))
     if (!data.success) return
-    localStorage.setItem('authtoken', data.json.authtoken)
+    localStorage.setItem('authtoken', data.authtoken)
     router.push('/')
   }
 
