@@ -3,52 +3,39 @@ import { toast } from "react-toastify";
 import Context from "./Context";
 
 const State = props => {
-    const { router, cart, setCart, subtotal, setSubtotal, calculate, sidebar } = props
-    let host = "http://localhost:5000/"
-    if (!router?.pathname.includes('localhost')) host = "https://codeswearweb.herokuapp.com/"
+    const { router, cart, setCart, subtotal, setSubtotal, calculate, sidebar, fetchApp } = props
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const pincodes = [110045]
 
-    async function fetchApp(api, method = "GET", body = null, token = null) {
-        try {
-            const authtoken = token || localStorage.getItem('token')
-            const response = await fetch(host + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
-            const json = await response.json();
-            return { success: json.success, json }
-        } catch {
-            toast.error("Server Down! Please try again later...");
-            return { success: false }
-        }
-    }
-
-    function handleCart(cart) {
+    async function handleCart(cart, msg = null) {
         const sum = calculate(cart)
         if (!sum && sum !== 0) return
-        setCart(cart)
-        setSubtotal(sum)
-        localStorage.setItem('cart', JSON.stringify(cart))
+        const data = await fetchApp('user/cart', 'PUT', JSON.stringify({ cart }))
+        if (data.success) {
+            toast.success(msg)
+            setCart(cart)
+            setSubtotal(sum)
+        }
     }
 
     function editCart(type, id, price, name, size, quantity = 1) {
         let newCart = cart
         if (size) id = id + size
         if (typeof quantity !== 'number') { quantity = 0 }
-        if (type === 'add') {
+        if (type == 'add') {
             if (id in newCart) newCart[id].quantity += quantity
             else newCart[id] = { quantity, price, name, size }
-            toast.success('Product added to cart!')
-        } else if (type === 'remove') {
+            handleCart(newCart, 'Product added to cart!')
+            // toast.success('Product added to cart!')
+        } else if (type == 'remove') {
             newCart[id].quantity -= quantity
             if (newCart[id].quantity <= 0) delete newCart[id]
-            toast.success('Product removed from cart!')
+            handleCart(newCart, 'Product removed from cart!')
+            // toast.warn('Product removed from cart!')
         }
-        handleCart(newCart)
     }
 
-    function clearCart() {
-        toast.success('Successfully cleared the cart!')
-        handleCart({})
-    }
+    function clearCart() { handleCart({}, 'Successfully cleared the cart!') }
 
     function verifyPin(event) {
         const key = event.key

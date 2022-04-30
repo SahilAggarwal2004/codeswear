@@ -11,11 +11,11 @@ export default function Home() {
       </Head>
 
       <main>
-        <Image src="/home.png" alt="Wear the Code!" width={820} height={312} quality={100} layout='responsive' />
+        <Image src="/home.png" alt="Wear the Code!" width={820} height={312} quality={100} layout='responsive' priority />
         <section className="text-gray-600 body-font">
           <div className="container px-5 py-24 mx-auto">
             <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{'Wear The <CODE/>'}</h1>
+              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Wear The &lt;CODE /&gt;</h1>
               <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">What do you want? You want the code? So why not wear the code?</p>
             </div>
             <div className="flex flex-wrap -m-4">

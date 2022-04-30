@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Context from '../context/Context';
 
 export default function Login() {
-  const { router } = useContext(Context)
+  const { router, fetchApp } = useContext(Context)
   const email = useRef();
   const password = useRef();
 
@@ -12,7 +12,7 @@ export default function Login() {
     event.preventDefault()
     const data = await fetchApp(`auth/login`, 'POST', JSON.stringify({ email: email.current.value, password: password.current.value }))
     if (!data.success) return
-    localStorage.setItem('token', data.json.authtoken)
+    localStorage.setItem('authtoken', data.json.authtoken)
     router.push('/')
   }
 

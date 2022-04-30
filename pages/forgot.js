@@ -4,12 +4,11 @@ import Link from 'next/link'
 import Context from '../context/Context';
 
 export default function Forgot() {
-    const { router } = useContext(Context)
+    const { router, fetchApp } = useContext(Context)
     const email = useRef();
     const otp = useRef();
     const password = useRef();
-    const [stage, setStage] = useState(1)
-    // const [stage, setStage] = useState(0)
+    const [stage, setStage] = useState(0)
 
     async function submit(event) {
         event.preventDefault()

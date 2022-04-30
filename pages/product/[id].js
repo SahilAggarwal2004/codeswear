@@ -26,7 +26,7 @@ export default function Id({ product: { id, name, description, image, price, siz
             <div className="container px-5 py-16 mx-auto">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap items-center justify-center">
                     <div className='relative w-1/2 sm:w-1/3 xl:w-1/4 aspect-[0.6] rounded object-cover object-top'>
-                        <Image alt={name} src={image} layout='fill' objectFit='contain' />
+                        <Image alt={name} src={image} layout='fill' objectFit='contain' priority />
                     </div>
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">CODESWEAR</h2>
@@ -39,7 +39,7 @@ export default function Id({ product: { id, name, description, image, price, siz
                                 {[...Array(5 - ratings)].map((rating, index) => <svg key={index} fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-myorange" viewBox="0 0 24 24">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                                 </svg>)}
-                                <span className="text-gray-600 ml-3 text-center">{reviews.length === 1 ? '1 Review' : `${reviews.length || 'No'} Reviews`}</span>
+                                <span className="text-gray-600 ml-3 text-center">{reviews.length == 1 ? '1 Review' : `${reviews.length || 'No'} Reviews`}</span>
                             </span>
                             <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2">
                                 <a className="text-gray-500">

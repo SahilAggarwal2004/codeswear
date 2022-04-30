@@ -16,7 +16,7 @@ export default function Footer() {
                         <span className="ml-3 text-xl text-myorange">CodesWear</span>
                     </div>
                     <div className="mt-2 text-sm text-gray-500">
-                        <p>Wear the &lt;code/&gt;</p>
+                        <p>Wear the &lt;code /&gt;</p>
                         <p>Premium tshirts, hoodies and apparals</p>
                     </div>
                 </div>
