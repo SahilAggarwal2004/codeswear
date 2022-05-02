@@ -4,6 +4,8 @@ import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
 
 export default function Checkout() {
   const { cart, subtotal, editCart, verifyPin, sidebar } = useContext(Context)
+  const delivery = subtotal && subtotal < 499 ? 50 : 0
+  const total = subtotal + delivery
 
   useEffect(() => {
     sidebar.current?.classList.add('translate-x-full')
@@ -67,10 +69,11 @@ export default function Checkout() {
           )}
         </ol>
         <div className='font-semibold w-full ml-3 mt-6 text-sm'>Subtotal: ₹{subtotal}</div>
-        <div className='font-semibold w-full ml-3 mt-1 text-sm text-green-500'>Yay, Free Delivery!</div>
+        {subtotal >= 499 ? <div className='font-semibold w-full ml-3 mt-1 text-sm text-green-500'>Yay, Free Delivery!</div> :
+          <div className='font-semibold w-full ml-3 mt-1 text-sm'>Delivery: ₹{delivery}</div>}
       </div>
       <div className='w-full text-center mt-8'>
-        <button disabled={!subtotal} className="text-white font-semibold bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded">Proceed to pay ₹{subtotal}</button>
+        <button disabled={!subtotal} className="text-white font-semibold bg-myorange border-0 py-2 px-4 focus:outline-none hover:bg-darkorange rounded">Proceed to pay ₹{total}</button>
       </div>
     </div>
   )

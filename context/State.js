@@ -1,11 +1,38 @@
-import React from "react";
 import { toast } from "react-toastify";
 import Context from "./Context";
+import React, { useState, useEffect, useRef } from 'react'
 
 const State = props => {
-    const { router, cart, setCart, subtotal, setSubtotal, calculate, sidebar, fetchApp } = props
+    const { router } = props;
+    const sidebar = useRef();
+    let host = useRef("https://codeswearweb.herokuapp.com/")
+    const [cart, setCart] = useState({})
+    const [subtotal, setSubtotal] = useState(0)
+    const [logged, setLogged] = useState(false)
+    const [progress, setProgress] = useState(0)
+    const loggedOutRedirects = ['/account', '/order', '/orders', '/checkout']
+    const loggedInRedirects = ['/signup', '/login', '/forgot']
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const pincodes = [110045]
+
+    async function fetchApp(api, method = "GET", body = null, authtoken = localStorage.getItem('authtoken')) {
+        try {
+            const response = await fetch(host.current + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
+            const json = await response.json();
+            json.success ? toast.success(json.msg) : toast.error(json.error)
+            return json
+        } catch {
+            toast.error("Server Down! Please try again later...");
+            return { success: false }
+        }
+    }
+
+    function calculate(cart) {
+        let sum = 0;
+        Object.keys(cart).forEach(id => sum += cart[id].price * cart[id].quantity)
+        if (!sum) sidebar.current?.classList.add('translate-x-full')
+        return sum
+    }
 
     async function handleCart(cart, msg = null) {
         const sum = calculate(cart)
@@ -26,12 +53,10 @@ const State = props => {
             if (id in newCart) newCart[id].quantity += quantity
             else newCart[id] = { quantity, price, name, size }
             handleCart(newCart, 'Product added to cart!')
-            // toast.success('Product added to cart!')
         } else if (type == 'remove') {
             newCart[id].quantity -= quantity
             if (newCart[id].quantity <= 0) delete newCart[id]
             handleCart(newCart, 'Product removed from cart!')
-            // toast.warn('Product removed from cart!')
         }
     }
 
@@ -51,8 +76,30 @@ const State = props => {
         router.push('/checkout')
     }
 
+    useEffect(() => {
+        // next/router provides us events to do changes according to different states of router. We are using this in useEffect as router is not defined for server
+        router.events.on('routeChangeStart', () => setProgress(100 / 3))
+        router.events.on('routeChangeComplete', () => setProgress(100))
+
+        setLogged(Boolean(localStorage.getItem('authtoken')))
+        if (location.hostname == 'localhost') host.current = "http://localhost:5000/"
+        fetchApp('user/cart').then(data => {
+            if (!data.success) return
+            setCart(data.cart)
+            const sum = calculate(data.cart)
+            sum ? setSubtotal(sum) : setSubtotal(0)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        if (!localStorage.getItem('authtoken') && loggedOutRedirects.includes(router.pathname)) router.push('/')
+        else if (localStorage.getItem('authtoken') && loggedInRedirects.includes(router.pathname)) router.push('/')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.pathname])
+
     return (
-        <Context.Provider value={{ router, fetchApp, cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes }}>
+        <Context.Provider value={{ router, fetchApp, cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes, logged, setLogged, progress, setProgress }}>
             {props.children}
         </Context.Provider>
     )

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Context from '../context/Context';
 
 export default function Login() {
-  const { router, fetchApp } = useContext(Context)
+  const { router, fetchApp, setLogged } = useContext(Context)
   const email = useRef();
   const password = useRef();
 
@@ -13,6 +13,7 @@ export default function Login() {
     const data = await fetchApp(`auth/login`, 'POST', JSON.stringify({ email: email.current.value, password: password.current.value }))
     if (!data.success) return
     localStorage.setItem('authtoken', data.authtoken)
+    setLogged(true)
     router.push('/')
   }
 
@@ -34,13 +35,7 @@ export default function Login() {
             <input ref={password} type="password" autoComplete="current-password" required minLength={8} className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-myorange focus:border-myorange focus:z-10 sm:text-sm" placeholder="Password" />
           </div>
 
-          <div className="flex items-center justify-between space-x-2">
-            <div className="flex items-center">
-              <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 border-gray-300 rounded" />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">Remember me</label>
-            </div>
-            <Link href='/forgot'><a className="font-medium text-sm text-right text-darkorange hover:text-myorange">Forgot your password?</a></Link>
-          </div>
+          <Link passHref href='/forgot'><div className="cursor-pointer font-medium text-sm text-darkorange hover:text-myorange">Forgot your password?</div></Link>
 
           <button type="submit" className="relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-myorange hover:bg-darkorange focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-myorange">Log in</button>
         </form>

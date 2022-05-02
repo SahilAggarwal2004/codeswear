@@ -1,30 +1,48 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Context from '../context/Context'
 import { AiOutlineShoppingCart, AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai' // react-icons is a very good alternative to font-awesome and is very much optimised than that.
 import { BsFillBagCheckFill } from 'react-icons/bs'
 import { MdAccountCircle } from 'react-icons/md'
+import LoadingBar from 'react-top-loading-bar' // react-top-loading-bar is an easy to use library for adding top loading bars with many customizations in a react app
 
 export default function Navbar() {
-    const { cart, subtotal, editCart, clearCart, sidebar, categories } = useContext(Context)
+    const { cart, subtotal, editCart, clearCart, sidebar, categories, logged, setLogged, router, progress, setProgress } = useContext(Context)
+    const [dropdown, setDropdown] = useState(false)
+
+    function logout() {
+        localStorage.removeItem('authtoken')
+        setLogged(false)
+        router.push('/login')
+    }
 
     function toggleCart() { sidebar.current.classList.toggle('translate-x-full') }
 
     return <>
         <nav className="sticky z-10 inset-0 flex flex-col justify-center items-center md:flex-row md:justify-start py-2 w-full shadow-lg mb-4 bg-white">
+            <LoadingBar color='#fa5340' progress={progress} waitingTime={150} onLoaderFinished={() => setProgress(0)} />
             <div className="mx-5 flex h-[2.1875rem] aspect-[1.4]">
                 <Link passHref href='/'><a><Image src="/logo.png" alt="CodesWear" width={67.2} height={48} priority /></a></Link>
             </div>
             <ul className='flex space-x-4 font-semibold mt-2 mb-1 md:my-0'>
                 {categories.map(category => <Link key={category} passHref href={`/categories/${category}`}><a className='hover:text-myorange'>{category.charAt(0).toUpperCase() + category.slice(1)}</a></Link>)}
             </ul>
-            <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
-                <Link passHref href='/login'>
-                    <a><MdAccountCircle className='scale-150' /></a>
-                </Link>
+
+            {logged ? <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
+                <div onClick={() => setDropdown(!dropdown)} onMouseOver={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)}>
+                    <MdAccountCircle className='scale-150 cursor-pointer' />
+                    {dropdown && <ul className="absolute top-9 right-8 bg-white shadow-lg border border-black pl-4 py-2 block w-32 rounded">
+                        <Link passHref href='/account'><div className='cursor-pointer text-sm py-0.5 hover:font-semibold'>My Account</div></Link>
+                        <Link passHref href='/orders'><div className='cursor-pointer text-sm py-0.5 hover:font-semibold'>My Orders</div></Link>
+                        <li className='cursor-pointer text-sm py-0.5 hover:font-semibold' onClick={logout}>Logout</li>
+                    </ul>}
+                </div>
                 <AiOutlineShoppingCart className='scale-150 cursor-pointer' onClick={toggleCart} />
-            </div>
+            </div> :
+                <Link passHref href='/login'>
+                    <button className='absolute top-3 right-3 px-2 py-1 bg-myorange hover:bg-darkorange text-sm rounded-md text-white'>Login</button>
+                </Link>}
         </nav >
         <div ref={sidebar} className='z-20 fixed top-0 right-0 h-screen transition-all translate-x-full w-[17.5rem] bg-lightorange border-l border-black px-4 py-6 select-none'>
             <AiFillCloseCircle className="absolute top-3 right-3 cursor-pointer scale-150 text-myorange" onClick={toggleCart} />
