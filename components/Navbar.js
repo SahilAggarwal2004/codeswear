@@ -8,20 +8,13 @@ import { MdAccountCircle } from 'react-icons/md'
 import LoadingBar from 'react-top-loading-bar' // react-top-loading-bar is an easy to use library for adding top loading bars with many customizations in a react app
 
 export default function Navbar() {
-    const { cart, subtotal, editCart, clearCart, sidebar, categories, logged, setLogged, router, progress, setProgress } = useContext(Context)
-    const [dropdown, setDropdown] = useState(false)
-
-    function logout() {
-        localStorage.removeItem('authtoken')
-        setLogged(false)
-        router.push('/login')
-    }
+    const { cart, subtotal, editCart, clearCart, sidebar, categories, logged, progress, setProgress, dropdown, setDropdown, logout } = useContext(Context)
 
     function toggleCart() { sidebar.current.classList.toggle('translate-x-full') }
 
     return <>
         <nav className="sticky z-10 inset-0 flex flex-col justify-center items-center md:flex-row md:justify-start py-2 w-full shadow-lg mb-4 bg-white">
-            <LoadingBar color='#fa5340' progress={progress} waitingTime={150} onLoaderFinished={() => setProgress(0)} />
+            <LoadingBar color='#fa5340' progress={progress} waitingTime={300} onLoaderFinished={() => setProgress(0)} />
             <div className="mx-5 flex h-[2.1875rem] aspect-[1.4]">
                 <Link passHref href='/'><a><Image src="/logo.png" alt="CodesWear" width={67.2} height={48} priority /></a></Link>
             </div>
@@ -30,7 +23,7 @@ export default function Navbar() {
             </ul>
 
             {logged ? <div className='mx-5 h-full absolute top-4 right-0 flex space-x-5 md:items-center md:top-0'>
-                <div onClick={() => setDropdown(!dropdown)} onMouseOver={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)}>
+                <div onMouseOver={() => setDropdown(true)} onMouseLeave={() => setDropdown(false)}>
                     <MdAccountCircle className='scale-150 cursor-pointer' />
                     {dropdown && <ul className="absolute top-9 right-8 bg-white shadow-lg border border-black pl-4 py-2 block w-32 rounded">
                         <Link passHref href='/account'><div className='cursor-pointer text-sm py-0.5 hover:font-semibold'>My Account</div></Link>

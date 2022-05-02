@@ -14,10 +14,10 @@ export default function Forgot() {
         event.preventDefault()
         let data;
         if (!stage) {
-            data = await fetchApp(`auth/otp`, 'POST', JSON.stringify({ email: email.current.value }))
+            data = await fetchApp(`auth/otp`, 'POST', { email: email.current.value })
             if (data.success) setStage(1)
         } else {
-            data = await fetchApp(`auth/forgot`, 'PUT', JSON.stringify({ email: email.current.value, otp: otp.current.value, password: password.current.value }))
+            data = await fetchApp(`auth/forgot`, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
             if (data.success) router.push('/login')
         }
     }

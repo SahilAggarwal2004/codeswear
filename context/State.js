@@ -10,18 +10,30 @@ const State = props => {
     const [subtotal, setSubtotal] = useState(0)
     const [logged, setLogged] = useState(false)
     const [progress, setProgress] = useState(0)
-    const loggedOutRedirects = ['/account', '/order', '/orders', '/checkout']
-    const loggedInRedirects = ['/signup', '/login', '/forgot']
+    const [dropdown, setDropdown] = useState(false)
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     const pincodes = [110045]
 
+    function logout() {
+        localStorage.removeItem('authtoken')
+        setLogged(false)
+        router.push('/login')
+    }
+
     async function fetchApp(api, method = "GET", body = null, authtoken = localStorage.getItem('authtoken')) {
         try {
+            body = body && JSON.stringify(body)
+            setProgress(100 / 3)
             const response = await fetch(host.current + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
             const json = await response.json();
-            json.success ? toast.success(json.msg) : toast.error(json.error)
+            setProgress(100)
+            if (!json.success) {
+                if (json.error.includes('authenticate')) logout()
+                toast.error(json.error)
+            } else toast.success(json.msg)
             return json
         } catch {
+            setProgress(100)
             toast.error("Server Down! Please try again later...");
             return { success: false }
         }
@@ -37,12 +49,11 @@ const State = props => {
     async function handleCart(cart, msg = null) {
         const sum = calculate(cart)
         if (!sum && sum !== 0) return
-        const data = await fetchApp('user/cart', 'PUT', JSON.stringify({ cart }))
-        if (data.success) {
-            toast.success(msg)
-            setCart(cart)
-            setSubtotal(sum)
-        }
+        const data = await fetchApp('user/cart', 'PUT', { cart })
+        if (!data.success) return
+        toast.success(msg)
+        setCart(cart)
+        setSubtotal(sum)
     }
 
     function editCart(type, id, price, name, size, quantity = 1) {
@@ -83,7 +94,7 @@ const State = props => {
 
         setLogged(Boolean(localStorage.getItem('authtoken')))
         if (location.hostname == 'localhost') host.current = "http://localhost:5000/"
-        fetchApp('user/cart').then(data => {
+        localStorage.getItem('authtoken') && fetchApp('user/cart').then(data => {
             if (!data.success) return
             setCart(data.cart)
             const sum = calculate(data.cart)
@@ -92,14 +103,10 @@ const State = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(() => {
-        if (!localStorage.getItem('authtoken') && loggedOutRedirects.includes(router.pathname)) router.push('/')
-        else if (localStorage.getItem('authtoken') && loggedInRedirects.includes(router.pathname)) router.push('/')
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.pathname])
+    useEffect(() => { setDropdown(false) }, [router.pathname])
 
     return (
-        <Context.Provider value={{ router, fetchApp, cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes, logged, setLogged, progress, setProgress }}>
+        <Context.Provider value={{ router, fetchApp, cart, subtotal, editCart, clearCart, verifyPin, sidebar, categories, buyNow, pincodes, logged, setLogged, progress, setProgress, dropdown, setDropdown, logout }}>
             {props.children}
         </Context.Provider>
     )

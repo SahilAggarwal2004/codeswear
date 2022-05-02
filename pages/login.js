@@ -10,7 +10,7 @@ export default function Login() {
 
   async function submit(event) {
     event.preventDefault()
-    const data = await fetchApp(`auth/login`, 'POST', JSON.stringify({ email: email.current.value, password: password.current.value }))
+    const data = await fetchApp(`auth/login`, 'POST', { email: email.current.value, password: password.current.value })
     if (!data.success) return
     localStorage.setItem('authtoken', data.authtoken)
     setLogged(true)
