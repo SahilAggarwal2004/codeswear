@@ -7,7 +7,7 @@ export default function Footer() {
     const { categories } = useContext(Context)
     return (
         <footer className="text-gray-600 body-font">
-            <div className="container px-5 py-16 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+            <div className="w-full px-5 py-16 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
                 <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
                     <div className='flex items-center'>
                         <div className='h-[1.5625rem] aspect-[1.4]'>
@@ -80,7 +80,7 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="container bg-gray-100 mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row justify-between items-center text-sm text-gray-500 text-center">
+            <div className="w-full bg-gray-100 mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row justify-between items-center text-sm text-gray-500 text-center">
                 <span>© 2022 CodesWear - All Rights Reserved</span>
                 <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" className="flex items-center space-x-2 mt-1 sm:mt-0" rel="noreferrer">
                     <span>Follow on Linkedin!</span>

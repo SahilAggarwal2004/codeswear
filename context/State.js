@@ -47,22 +47,22 @@ const State = props => {
     }
 
     async function handleCart(cart, msg = null) {
-        const sum = calculate(cart)
-        if (!sum && sum !== 0) return
         const data = await fetchApp('user/cart', 'PUT', { cart })
         if (!data.success) return
+        const sum = calculate(data.cart)
+        if (!sum && sum !== 0) return
         toast.success(msg)
-        setCart(cart)
+        setCart(data.cart)
         setSubtotal(sum)
     }
 
-    function editCart(type, id, price, name, size, quantity = 1) {
-        let newCart = cart
+    function editCart(type, id, name, size, quantity = 1) {
+        let newCart = JSON.parse(JSON.stringify(cart))
         if (size) id = id + size
         if (typeof quantity !== 'number') { quantity = 0 }
         if (type == 'add') {
             if (id in newCart) newCart[id].quantity += quantity
-            else newCart[id] = { quantity, price, name, size }
+            else newCart[id] = { quantity, name, size }
             handleCart(newCart, 'Product added to cart!')
         } else if (type == 'remove') {
             newCart[id].quantity -= quantity
@@ -79,10 +79,10 @@ const State = props => {
         if (key !== 'Backspace' && !reg.test(key)) event.preventDefault()
     }
 
-    function buyNow(id, price, name, size, quantity = 1) {
+    function buyNow(id, name, size, quantity = 1) {
         let newCart = {};
         if (size) id = id + size
-        newCart[id] = { quantity, price, name, size }
+        newCart[id] = { quantity, name, size }
         handleCart(newCart)
         router.push('/checkout')
     }
