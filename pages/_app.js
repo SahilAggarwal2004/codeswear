@@ -14,8 +14,7 @@ function MyApp({ Component, pageProps }) {
   const loggedInRedirects = ['/signup', '/login', '/forgot']
 
   useEffect(() => {
-    if (!localStorage.getItem('authtoken') && loggedOutRedirects.includes(router.pathname)) router.push('/')
-    else if (localStorage.getItem('authtoken') && loggedInRedirects.includes(router.pathname)) router.push('/')
+    if ((!localStorage.getItem('authtoken') && loggedOutRedirects.includes(router.pathname)) || (localStorage.getItem('authtoken') && loggedInRedirects.includes(router.pathname))) router.push('/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname])
 

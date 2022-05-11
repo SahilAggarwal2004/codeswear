@@ -32,7 +32,7 @@ export async function getServerSideProps({ query: { category } }) {
     const categories = ['tshirts', 'hoodies', 'mugs', 'stickers']
     if (!categories.includes(category)) return { notFound: true }; // server will return a 404 error and nextjs will show the defualt page for 404 error
 
-    const response = await fetch(`${process.env.API}products/get?category=${category}`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}products/get?category=${category}`)
     const products = await response.json()
 
     return { props: { products, category } };

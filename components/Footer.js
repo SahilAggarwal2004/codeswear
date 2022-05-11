@@ -5,11 +5,13 @@ import Context from '../context/Context'
 
 export default function Footer() {
     const { categories } = useContext(Context)
+    const accountList = ['account', 'orders'];
+    const appList = ['contact', 'about'];
     return (
         <footer className="text-gray-600 body-font">
             <div className="w-full px-5 py-16 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
                 <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-                    <div className='flex items-center'>
+                    <div className='flex items-center justify-center md:justify-start'>
                         <div className='h-[1.5625rem] aspect-[1.4]'>
                             <Image src="/logo.png" alt="CodesWear" width={67.2} height={48} priority />
                         </div>
@@ -21,61 +23,22 @@ export default function Footer() {
                     </div>
                 </div>
                 <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
+                    <div className="md:w-1/3 w-full px-4">
                         <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">SHOP</h2>
                         <nav className="list-none mb-10">
                             {categories.map(category => <Link key={category} passHref href={`/categories/${category}`}><a className="text-gray-600 block hover:text-gray-800">{category.charAt(0).toUpperCase() + category.slice(1)}</a></Link>)}
                         </nav>
                     </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <div className="md:w-1/3 w-full px-4">
+                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">ACCOUNT</h2>
                         <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-                            </li>
+                            {accountList.map(item => <Link key={item} passHref href={`/${item}`}><a className="text-gray-600 block hover:text-gray-800">{item.charAt(0).toUpperCase() + item.slice(1)}</a></Link>)}
                         </nav>
                     </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <div className="md:w-1/3 w-full px-4">
+                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">ABOUT</h2>
                         <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-                            </li>
-                        </nav>
-                    </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-                            </li>
+                            {appList.map(item => <Link key={item} passHref href={`/${item}`}><a className="text-gray-600 block hover:text-gray-800">{item.charAt(0).toUpperCase() + item.slice(1)}</a></Link>)}
                         </nav>
                     </div>
                 </div>

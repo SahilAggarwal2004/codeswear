@@ -5,7 +5,6 @@ import React, { useState, useEffect, useRef } from 'react'
 const State = props => {
     const { router } = props;
     const sidebar = useRef();
-    let host = useRef("https://codeswearweb.herokuapp.com/")
     const [cart, setCart] = useState({})
     const [subtotal, setSubtotal] = useState(0)
     const [logged, setLogged] = useState(false)
@@ -24,11 +23,11 @@ const State = props => {
         try {
             body = body && JSON.stringify(body)
             setProgress(100 / 3)
-            const response = await fetch(host.current + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
+            const response = await fetch(process.env.NEXT_PUBLIC_API + api, { method, body, headers: { 'auth-token': authtoken, 'Content-Type': 'application/json' } })
             const json = await response.json();
             setProgress(100)
             if (!json.success) {
-                if (json.error.includes('authenticate')) logout()
+                if (json.error?.includes('authenticate')) logout()
                 toast.error(json.error)
             } else toast.success(json.msg)
             return json
@@ -93,7 +92,6 @@ const State = props => {
         router.events.on('routeChangeComplete', () => setProgress(100))
 
         setLogged(Boolean(localStorage.getItem('authtoken')))
-        if (location.hostname == 'localhost') host.current = "http://localhost:5000/"
         localStorage.getItem('authtoken') && fetchApp('user/cart').then(data => {
             if (!data.success) return
             setCart(data.cart)

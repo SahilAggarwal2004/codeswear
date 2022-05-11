@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Orders() {
   return <>
-    <h1 className='text-center text-xl font-bold mt-8 mb-2'>Your Orders</h1>
+    <h1 className='text-center text-xl font-bold mt-8 mb-2'>My Orders</h1>
     <div className="overflow-x-auto">
       <div className="py-2 inline-block min-w-full">
         <table className="min-w-full">
@@ -23,7 +23,7 @@ export default function Orders() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b">
+            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 Mark
@@ -35,7 +35,7 @@ export default function Orders() {
                 @mdo
               </td>
             </tr>
-            <tr className="bg-white border-b">
+            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2</td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 Jacob
@@ -47,7 +47,7 @@ export default function Orders() {
                 @fat
               </td>
             </tr>
-            <tr className="bg-white border-b">
+            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">3</td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 Larry
@@ -64,4 +64,10 @@ export default function Orders() {
       </div>
     </div>
   </>
+}
+
+export async function getServerSideProps() {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API}user/orders`)
+  const orders = await response.json()
+  return { props: { orders } };
 }
